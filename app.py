@@ -72,7 +72,12 @@ This transaction shows abnormal fraud-related behavior.
 # EMBEDDINGS
 # -----------------------------------
 
+st.write("Total Fraud Rows:", len(fraud_df))
+st.write("Total Documents:", len(documents))
+
 embeddings = embedding_model.encode(documents)
+
+st.write("Embeddings Generated:", len(embeddings))
 
 # -----------------------------------
 # CHROMADB
