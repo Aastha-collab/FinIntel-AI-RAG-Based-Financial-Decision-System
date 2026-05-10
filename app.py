@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 import joblib
 from sentence_transformers import SentenceTransformer
 import chromadb
@@ -10,10 +11,40 @@ import os
 # PAGE CONFIG
 # -----------------------------------
 
-st.set_page_config(
-    page_title="FinIntel AI",
-    layout="wide"
-)
+st.markdown("""
+<style>
+
+.main {
+    background-color: #0E1117;
+    color: white;
+}
+
+h1, h2, h3 {
+    color: #00FFAA;
+}
+
+.stButton>button {
+    background-color: #00FFAA;
+    color: black;
+    border-radius: 10px;
+    height: 3em;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.stMetric {
+    background-color: #1E1E1E;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.css-1d391kg {
+    background-color: #111827;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 st.markdown("""
 # 💳 FinIntel AI
@@ -108,6 +139,40 @@ embeddings = embedding_model.encode(documents)
 
 st.write("Embeddings Generated:", len(embeddings))
 
+st.subheader("📊 Transaction Distribution")
+
+fig, ax = plt.subplots()
+
+labels = ['Normal', 'Fraud']
+
+sizes = [
+    len(normal_df),
+    len(fraud_df)
+]
+
+ax.pie(
+    sizes,
+    labels=labels,
+    autopct='%1.1f%%'
+)
+
+st.pyplot(fig)
+
+st.subheader("💰 Fraud Transaction Amount Distribution")
+
+fig2, ax2 = plt.subplots()
+
+ax2.hist(
+    fraud_df['Amount'],
+    bins=20
+)
+
+ax2.set_xlabel("Transaction Amount")
+
+ax2.set_ylabel("Frequency")
+
+st.pyplot(fig2)
+
 # -----------------------------------
 # CHROMADB
 # -----------------------------------
@@ -155,6 +220,14 @@ row_number = st.sidebar.number_input(
     max_value=len(df)-1,
     value=0
 )
+
+st.sidebar.markdown("""
+<style>
+[data-testid="stSidebar"] {
+    background-color: #111827;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # -----------------------------------
 # PROCESS TRANSACTION
@@ -295,12 +368,23 @@ if st.button("Generate AI Fraud Analysis"):
 
         st.subheader("AI Fraud Intelligence Report")
 
-        st.write(ai_output)
+        st.markdown(f"""
+<div style="
+background-color:#1E1E1E;
+padding:20px;
+border-radius:15px;
+border:2px solid #00FFAA;
+">
+
+{ai_output}
+
+</div>
+""", unsafe_allow_html=True)
 
 
 st.markdown("""
 ---
-## 💼 Business Impact
+## Business Impact
 
 FinIntel AI helps financial institutions:
 
@@ -312,14 +396,4 @@ FinIntel AI helps financial institutions:
 
 This project demonstrates the integration of:
 Machine Learning + RAG + Vector Databases + LLM APIs.
-""")
-
-st.markdown("""
----
-Made with ❤️ using:
-- Streamlit
-- Scikit-learn
-- ChromaDB
-- Sentence Transformers
-- NVIDIA NIM APIs
 """)
