@@ -164,25 +164,54 @@ Suspicious V10 Score: {sample_transaction['V10'].values[0]}
 """
 
 # -----------------------------------
-# QUERY EMBEDDING
-# -----------------------------------
+if prediction_label == "Fraudulent Transaction":
 
-query_embedding = embedding_model.encode(
-    [transaction_text]
-)
+    query_embedding = embedding_model.encode(
+        [transaction_text]
+    )
 
-# -----------------------------------
-# RETRIEVAL
-# -----------------------------------
+    results = collection.query(
+        query_embeddings=query_embedding.tolist(),
+        n_results=3
+    )
 
-results = collection.query(
-    query_embeddings=query_embedding.tolist(),
-    n_results=3
-)
+    retrieved_cases = "\n\n".join(
+        results['documents'][0]
+    )
 
-retrieved_cases = "\n\n".join(
-    results['documents'][0]
-)
+    prompt = f"""
+    You are an expert financial fraud analyst.
+
+    Prediction Result:
+    {prediction_label}
+
+    Transaction Details:
+    {transaction_text}
+
+    Retrieved Similar Fraud Cases:
+    {retrieved_cases}
+
+    Generate:
+
+    1. Fraud Reason
+    2. Risk Level
+    3. Suggested Action
+    4. Investigation Summary
+    """
+
+else:
+
+    prompt = f"""
+    You are a financial transaction analyst.
+
+    Prediction Result:
+    {prediction_label}
+
+    Transaction Details:
+    {transaction_text}
+
+    Explain briefly why this transaction appears normal and low risk.
+    """
 
 # -----------------------------------
 # PROMPT
