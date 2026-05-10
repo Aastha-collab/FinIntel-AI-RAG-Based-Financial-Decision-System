@@ -8,3 +8,4 @@ openai
 joblib
 torch
 torchvision
+matplotlib
