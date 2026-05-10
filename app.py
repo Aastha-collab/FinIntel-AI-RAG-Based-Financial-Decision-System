@@ -72,8 +72,13 @@ This transaction shows abnormal fraud-related behavior.
 # EMBEDDINGS
 # -----------------------------------
 
-st.write("Total Fraud Rows:", len(fraud_df))
-st.write("Total Documents:", len(documents))
+normal_df = df[df['Class'] == 0]
+
+st.write("Total Fraud Transactions:", len(fraud_df))
+
+st.write("Total Normal Transactions:", len(normal_df))
+
+st.write("Fraud Knowledge Base Documents:", len(documents))
 
 embeddings = embedding_model.encode(documents)
 
@@ -164,6 +169,9 @@ Suspicious V10 Score: {sample_transaction['V10'].values[0]}
 """
 
 # -----------------------------------
+# FRAUD / NORMAL LOGIC
+# -----------------------------------
+
 if prediction_label == "Fraudulent Transaction":
 
     query_embedding = embedding_model.encode(
@@ -210,35 +218,13 @@ else:
     Transaction Details:
     {transaction_text}
 
-    Explain briefly why this transaction appears normal and low risk.
+    Explain briefly:
+
+    1. Why transaction appears normal
+    2. Risk level
+    3. Why transaction is low risk
+    4. Final summary
     """
-
-# -----------------------------------
-# PROMPT
-# -----------------------------------
-
-prompt = f"""
-You are an expert financial fraud analyst.
-
-Prediction Result:
-{prediction_label}
-
-Transaction Details:
-{transaction_text}
-
-Retrieved Similar Fraud Cases:
-{retrieved_cases}
-
-Generate:
-
-1. Fraud Reason
-2. Risk Level
-3. Suggested Action
-4. Investigation Summary
-
-Keep the response concise and professional.
-"""
-
 # -----------------------------------
 # GENERATE AI RESPONSE
 # -----------------------------------
