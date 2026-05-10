@@ -15,8 +15,18 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("💳 FinIntel AI")
-st.subheader("RAG-Based Financial Fraud Intelligence System")
+st.markdown("""
+# 💳 FinIntel AI
+### AI-Powered Fraud Detection & Financial Decision Intelligence System
+
+This system combines:
+- Machine Learning Fraud Detection
+- Retrieval-Augmented Generation (RAG)
+- NVIDIA LLM APIs
+- AI-Based Financial Reasoning
+
+to identify suspicious financial transactions and generate intelligent fraud investigation reports.
+""")
 
 # -----------------------------------
 # LOAD DATA
@@ -74,11 +84,25 @@ This transaction shows abnormal fraud-related behavior.
 
 normal_df = df[df['Class'] == 0]
 
-st.write("Total Fraud Transactions:", len(fraud_df))
+col1, col2, col3 = st.columns(3)
 
-st.write("Total Normal Transactions:", len(normal_df))
+with col1:
+    st.metric(
+        "Fraud Transactions",
+        len(fraud_df)
+    )
 
-st.write("Fraud Knowledge Base Documents:", len(documents))
+with col2:
+    st.metric(
+        "Normal Transactions",
+        len(normal_df)
+    )
+
+with col3:
+    st.metric(
+        "Fraud Knowledge Base",
+        len(documents)
+    )
 
 embeddings = embedding_model.encode(documents)
 
@@ -115,7 +139,15 @@ client = OpenAI(
 # USER INPUT
 # -----------------------------------
 
-st.sidebar.header("Transaction Selection")
+st.sidebar.markdown("""
+## 🔍 How It Works
+
+1. User selects a transaction
+2. ML model predicts fraud risk
+3. RAG retrieves similar fraud cases
+4. NVIDIA LLM generates AI investigation report
+5. System provides fraud reasoning & recommendations
+""")
 
 row_number = st.sidebar.number_input(
     "Enter Transaction Row Number",
@@ -153,7 +185,18 @@ else:
 
 st.subheader("Prediction Result")
 
-st.success(prediction_label)
+if prediction_label == "Fraudulent Transaction":
+    
+    st.error(f"🚨 {prediction_label}")
+
+else:
+    
+    st.success(f"✅ {prediction_label}")
+
+
+with st.expander("📄 Transaction Details"):
+
+    st.write(sample_transaction)
 
 # -----------------------------------
 # TRANSACTION TEXT
@@ -253,3 +296,30 @@ if st.button("Generate AI Fraud Analysis"):
         st.subheader("AI Fraud Intelligence Report")
 
         st.write(ai_output)
+
+
+st.markdown("""
+---
+## 💼 Business Impact
+
+FinIntel AI helps financial institutions:
+
+- Detect suspicious transactions faster
+- Reduce fraud investigation time
+- Improve explainability in fraud detection
+- Generate AI-powered fraud intelligence reports
+- Enhance financial risk monitoring systems
+
+This project demonstrates the integration of:
+Machine Learning + RAG + Vector Databases + LLM APIs.
+""")
+
+st.markdown("""
+---
+Made with ❤️ using:
+- Streamlit
+- Scikit-learn
+- ChromaDB
+- Sentence Transformers
+- NVIDIA NIM APIs
+""")
