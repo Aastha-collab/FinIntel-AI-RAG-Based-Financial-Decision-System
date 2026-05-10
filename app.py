@@ -85,7 +85,7 @@ st.write("Embeddings Generated:", len(embeddings))
 
 client_db = chromadb.Client()
 
-collection = client_db.create_collection(
+collection = client_db.get_or_create_collection(
     name="fraud_rag"
 )
 
