@@ -6,3 +6,5 @@ chromadb
 streamlit
 openai
 joblib
+torch
+torchvision
