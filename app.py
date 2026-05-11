@@ -77,7 +77,7 @@ st.markdown(
 
 div[data-testid="metric-container"] {
 
-    background: black !important;
+    background: white !important;
 
     border-radius: 20px !important;
 
@@ -283,12 +283,11 @@ row_number = st.sidebar.selectbox(
 # =========================================================
 # METRICS
 # =========================================================
-
 st.markdown("""
 <h2 style="
-color:#5B21B6;
-margin-top:20px;
+color:#4C1D95;
 font-weight:800;
+margin-bottom:20px;
 ">
 📊 System Analytics
 </h2>
@@ -296,29 +295,50 @@ font-weight:800;
 
 col1, col2, col3, col4 = st.columns(4)
 
-with col1:
-    st.metric(
-        "Total Transactions",
-        len(df)
-    )
+cards = [
 
-with col2:
-    st.metric(
-        "Fraud Cases",
-        len(fraud_df)
-    )
+    ("Total Transactions", len(df), "#6366F1"),
 
-with col3:
-    st.metric(
-        "Normal Cases",
-        len(normal_df)
-    )
+    ("Fraud Cases", len(fraud_df), "#EC4899"),
 
-with col4:
-    st.metric(
-        "Fraud Knowledge Base",
-        len(documents)
-    )
+    ("Normal Cases", len(normal_df), "#10B981"),
+
+    ("Fraud Knowledge Base", len(documents), "#8B5CF6")
+]
+
+for col, (title, value, color) in zip(
+    [col1, col2, col3, col4],
+    cards
+):
+
+    col.markdown(f"""
+    <div style="
+    background:white;
+    padding:22px;
+    border-radius:20px;
+    box-shadow:0px 4px 15px rgba(0,0,0,0.08);
+    border-top:6px solid {color};
+    text-align:center;
+    ">
+
+    <h3 style="
+    color:#6B7280;
+    font-size:16px;
+    margin-bottom:10px;
+    ">
+    {title}
+    </h3>
+
+    <h1 style="
+    color:#111827;
+    font-size:38px;
+    font-weight:800;
+    ">
+    {value}
+    </h1>
+
+    </div>
+    """, unsafe_allow_html=True)
 
 # =========================================================
 # TRANSACTION
