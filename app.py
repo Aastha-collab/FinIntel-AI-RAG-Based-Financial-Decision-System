@@ -15,45 +15,48 @@ st.set_page_config(
     layout="wide"
 )
 
-# -----------------------------------
-# CUSTOM DARK THEME
-# -----------------------------------
-
 st.markdown("""
 <style>
 
 .stApp {
-    background-color: #0E1117;
-    color: white;
+    background-color: #F8F5FF;
+    color: #2E2E2E;
 }
 
 h1, h2, h3, h4 {
-    color: #00FFAA;
+    color: #C06CFF;
 }
 
 [data-testid="stSidebar"] {
-    background-color: #111827;
+    background-color: #EDE7FF;
 }
 
 .stButton>button {
-    background-color: #00FFAA;
-    color: black;
-    border-radius: 10px;
+    background-color: #FFB6D9;
+    color: #2E2E2E;
+    border-radius: 12px;
     font-size: 18px;
     font-weight: bold;
     height: 3em;
     width: 100%;
+    border: none;
+}
+
+.stButton>button:hover {
+    background-color: #FF8FC4;
+    color: black;
 }
 
 div[data-testid="metric-container"] {
-    background-color: #1E1E1E;
-    border: 1px solid #00FFAA;
+    background-color: #FFFFFF;
+    border: 2px solid #E5D9FF;
     padding: 15px;
-    border-radius: 12px;
+    border-radius: 15px;
 }
 
 </style>
 """, unsafe_allow_html=True)
+
 
 # -----------------------------------
 # HEADER
@@ -365,8 +368,21 @@ border:2px solid #00FFAA;
 </div>
 """, unsafe_allow_html=True)
 
+# DOWNLOAD BUTTON
+
+st.download_button(
+
+    label="📥 Download AI Report",
+
+    data=ai_output,
+
+    file_name="fraud_analysis_report.txt",
+
+    mime="text/plain"
+)
+
 # -----------------------------------
-# DYNAMIC TRANSACTION GRAPH
+# TRANSACTION FEATURE GRAPH
 # -----------------------------------
 
 st.subheader("📈 Transaction Feature Visualization")
@@ -379,18 +395,52 @@ values = [
     sample_transaction['V10'].values[0]
 ]
 
-# Smaller graph size
-fig2, ax2 = plt.subplots(figsize=(3,3))
+# Smaller graph
+fig2, ax2 = plt.subplots(figsize=(4.5, 3))
 
-# Custom colors
-colors = ['#BD002F', '#9EBD00', '#008BBD']
+# Soft pastel colors
+colors = ['#FFB6D9', '#CDB4FF', '#A0E7E5']
 
 ax2.bar(
     features,
     values,
     color=colors,
-    width=0.5
+    width=0.45
 )
+
+# Background colors
+fig2.patch.set_facecolor('#F8F5FF')
+
+ax2.set_facecolor('#FFFFFF')
+
+# Small text sizes
+ax2.tick_params(
+    axis='x',
+    labelsize=8
+)
+
+ax2.tick_params(
+    axis='y',
+    labelsize=8
+)
+
+# Labels
+ax2.set_title(
+    "Transaction Feature Scores",
+    fontsize=10
+)
+
+ax2.set_ylabel(
+    "Values",
+    fontsize=8
+)
+
+# Clean look
+ax2.spines['top'].set_visible(False)
+
+ax2.spines['right'].set_visible(False)
+
+st.pyplot(fig2)
 
 # Titles and labels
 ax2.set_title("Transaction Feature Scores")
