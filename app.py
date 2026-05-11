@@ -182,7 +182,7 @@ div[data-testid="metric-container"] * {
 
     background-color: white !important;
 
-    color: black !important;
+    color: white !important;
 
     border-radius: 12px !important;
 
