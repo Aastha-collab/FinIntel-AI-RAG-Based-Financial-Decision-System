@@ -567,7 +567,18 @@ font-size:28px;
 margin:0;
 color:#1E293B;
 ">
-{ai_output.replace(chr(10), "<br>")}
+{
+ai_output
+.replace("Fraud Analysis Report", "<b>Fraud Analysis Report</b>")
+.replace("Fraud Reason:", "<b>Fraud Reason:</b>")
+.replace("Risk Level:", "<b>Risk Level:</b>")
+.replace("Suggested Action:", "<b>Suggested Action:</b>")
+.replace("Investigation Summary:", "<b>Investigation Summary:</b>")
+.replace("Why transaction appears normal:", "<b>Why transaction appears normal:</b>")
+.replace("Why transaction is low risk:", "<b>Why transaction is low risk:</b>")
+.replace("Final summary:", "<b>Final summary:</b>")
+.replace(chr(10), "<br>")
+}
 </p>
 
 </div>
