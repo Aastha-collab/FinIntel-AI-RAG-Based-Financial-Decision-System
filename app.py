@@ -350,7 +350,16 @@ else:
 
 with st.expander("📄 View Transaction Details"):
 
-    st.write(sample_transaction)
+    styled_df = sample_transaction.style.set_properties(**{
+        'background-color': '#FFFFFF',
+        'color': '#1E293B',
+        'border-color': '#E9D5FF'
+    })
+
+    st.dataframe(
+        styled_df,
+        use_container_width=True
+    )
 
 # =========================================================
 # TRANSACTION TEXT
