@@ -538,7 +538,7 @@ if st.button("✨ Generate AI Fraud Analysis"):
 
         ai_output = response.choices[0].message.content
 
-       st.markdown("""
+        st.markdown("""
 <div style="
 background: linear-gradient(
 135deg,
@@ -560,7 +560,7 @@ font-size: 16px;
 </div>
 """, unsafe_allow_html=True)
 
-st.write(ai_output)
+        st.write(ai_output)
 
         # DOWNLOAD REPORT
 
