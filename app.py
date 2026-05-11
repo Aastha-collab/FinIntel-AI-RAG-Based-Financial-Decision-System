@@ -1,50 +1,63 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import joblib
 from sentence_transformers import SentenceTransformer
 import chromadb
 from openai import OpenAI
-import os
+import matplotlib.pyplot as plt
 
 # -----------------------------------
 # PAGE CONFIG
 # -----------------------------------
 
+st.set_page_config(
+    page_title="FinIntel AI",
+    layout="wide"
+)
+
+# -----------------------------------
+# CUSTOM DARK THEME
+# -----------------------------------
+
 st.markdown("""
 <style>
 
-.main {
+.stApp {
     background-color: #0E1117;
     color: white;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
     color: #00FFAA;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #111827;
 }
 
 .stButton>button {
     background-color: #00FFAA;
     color: black;
     border-radius: 10px;
-    height: 3em;
-    width: 100%;
     font-size: 18px;
     font-weight: bold;
+    height: 3em;
+    width: 100%;
 }
 
-.stMetric {
+div[data-testid="metric-container"] {
     background-color: #1E1E1E;
+    border: 1px solid #00FFAA;
     padding: 15px;
-    border-radius: 10px;
-}
-
-.css-1d391kg {
-    background-color: #111827;
+    border-radius: 12px;
 }
 
 </style>
 """, unsafe_allow_html=True)
+
+# -----------------------------------
+# HEADER
+# -----------------------------------
 
 st.markdown("""
 # 💳 FinIntel AI
@@ -65,7 +78,6 @@ to identify suspicious financial transactions and generate intelligent fraud inv
 
 df = pd.read_csv("creditcard_sample.csv")
 
-# Feature engineering
 df['Hour'] = df['Time'] // 3600
 
 # -----------------------------------
@@ -83,14 +95,12 @@ embedding_model = SentenceTransformer(
 )
 
 # -----------------------------------
-# CREATE FRAUD KNOWLEDGE BASE
+# CREATE KNOWLEDGE BASE
 # -----------------------------------
 
 fraud_df = df[df['Class'] == 1]
 
-fraud_df = fraud_df[
-    ['Time', 'Amount', 'V14', 'V10', 'Class']
-]
+normal_df = df[df['Class'] == 0]
 
 documents = []
 
@@ -113,7 +123,62 @@ This transaction shows abnormal fraud-related behavior.
 # EMBEDDINGS
 # -----------------------------------
 
-normal_df = df[df['Class'] == 0]
+embeddings = embedding_model.encode(documents)
+
+# -----------------------------------
+# CHROMADB
+# -----------------------------------
+
+client_db = chromadb.Client()
+
+collection = client_db.get_or_create_collection(
+    name="fraud_rag"
+)
+
+# Avoid duplicate insertion
+
+if collection.count() == 0:
+
+    collection.add(
+        documents=documents,
+        embeddings=embeddings.tolist(),
+        ids=[str(i) for i in range(len(documents))]
+    )
+
+# -----------------------------------
+# NVIDIA CLIENT
+# -----------------------------------
+
+NVIDIA_API_KEY = st.secrets["NVIDIA_API_KEY"]
+
+client = OpenAI(
+    base_url="https://integrate.api.nvidia.com/v1",
+    api_key=NVIDIA_API_KEY
+)
+
+# -----------------------------------
+# SIDEBAR
+# -----------------------------------
+
+st.sidebar.header("🔍 Transaction Selection")
+
+st.sidebar.markdown("""
+Select a transaction row to:
+- Predict fraud risk
+- Retrieve similar fraud cases
+- Generate AI investigation report
+""")
+
+# DROPDOWN
+
+row_number = st.sidebar.selectbox(
+    "Select Transaction Row",
+    options=df.index.tolist()
+)
+
+# -----------------------------------
+# METRICS
+# -----------------------------------
 
 col1, col2, col3 = st.columns(3)
 
@@ -135,11 +200,11 @@ with col3:
         len(documents)
     )
 
-embeddings = embedding_model.encode(documents)
+# -----------------------------------
+# DYNAMIC PIE CHART
+# -----------------------------------
 
-st.write("Embeddings Generated:", len(embeddings))
-
-st.subheader("📊 Transaction Distribution")
+st.subheader("📊 Dataset Distribution")
 
 fig, ax = plt.subplots()
 
@@ -158,79 +223,8 @@ ax.pie(
 
 st.pyplot(fig)
 
-st.subheader("💰 Fraud Transaction Amount Distribution")
-
-fig2, ax2 = plt.subplots()
-
-ax2.hist(
-    fraud_df['Amount'],
-    bins=20
-)
-
-ax2.set_xlabel("Transaction Amount")
-
-ax2.set_ylabel("Frequency")
-
-st.pyplot(fig2)
-
 # -----------------------------------
-# CHROMADB
-# -----------------------------------
-
-client_db = chromadb.Client()
-
-collection = client_db.get_or_create_collection(
-    name="fraud_rag"
-)
-
-collection.add(
-    documents=documents,
-    embeddings=embeddings.tolist(),
-    ids=[str(i) for i in range(len(documents))]
-)
-
-# -----------------------------------
-# NVIDIA NIM API
-# -----------------------------------
-
-NVIDIA_API_KEY = st.secrets["NVIDIA_API_KEY"]
-
-client = OpenAI(
-    base_url="https://integrate.api.nvidia.com/v1",
-    api_key=NVIDIA_API_KEY
-)
-
-# -----------------------------------
-# USER INPUT
-# -----------------------------------
-
-st.sidebar.markdown("""
-## 🔍 How It Works
-
-1. User selects a transaction
-2. ML model predicts fraud risk
-3. RAG retrieves similar fraud cases
-4. NVIDIA LLM generates AI investigation report
-5. System provides fraud reasoning & recommendations
-""")
-
-row_number = st.sidebar.number_input(
-    "Enter Transaction Row Number",
-    min_value=0,
-    max_value=len(df)-1,
-    value=0
-)
-
-st.sidebar.markdown("""
-<style>
-[data-testid="stSidebar"] {
-    background-color: #111827;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# -----------------------------------
-# PROCESS TRANSACTION
+# TRANSACTION
 # -----------------------------------
 
 sample_transaction = df.drop(
@@ -243,33 +237,58 @@ prediction = rf_model.predict(
 )
 
 # -----------------------------------
-# LABEL
+# PREDICTION LABEL
 # -----------------------------------
 
 if prediction[0] == 1:
+
     prediction_label = "Fraudulent Transaction"
 
 else:
+
     prediction_label = "Normal Transaction"
 
 # -----------------------------------
 # SHOW PREDICTION
 # -----------------------------------
 
-st.subheader("Prediction Result")
+st.subheader("🎯 Prediction Result")
 
 if prediction_label == "Fraudulent Transaction":
-    
+
     st.error(f"🚨 {prediction_label}")
 
 else:
-    
+
     st.success(f"✅ {prediction_label}")
 
+# -----------------------------------
+# TRANSACTION DETAILS
+# -----------------------------------
 
 with st.expander("📄 Transaction Details"):
 
     st.write(sample_transaction)
+
+# -----------------------------------
+# DYNAMIC TRANSACTION GRAPH
+# -----------------------------------
+
+st.subheader("📈 Transaction Feature Visualization")
+
+features = ['Amount', 'V14', 'V10']
+
+values = [
+    sample_transaction['Amount'].values[0],
+    sample_transaction['V14'].values[0],
+    sample_transaction['V10'].values[0]
+]
+
+fig2, ax2 = plt.subplots()
+
+ax2.bar(features, values)
+
+st.pyplot(fig2)
 
 # -----------------------------------
 # TRANSACTION TEXT
@@ -304,48 +323,49 @@ if prediction_label == "Fraudulent Transaction":
     )
 
     prompt = f"""
-    You are an expert financial fraud analyst.
+You are an expert financial fraud analyst.
 
-    Prediction Result:
-    {prediction_label}
+Prediction Result:
+{prediction_label}
 
-    Transaction Details:
-    {transaction_text}
+Transaction Details:
+{transaction_text}
 
-    Retrieved Similar Fraud Cases:
-    {retrieved_cases}
+Retrieved Similar Fraud Cases:
+{retrieved_cases}
 
-    Generate:
+Generate:
 
-    1. Fraud Reason
-    2. Risk Level
-    3. Suggested Action
-    4. Investigation Summary
-    """
+1. Fraud Reason
+2. Risk Level
+3. Suggested Action
+4. Investigation Summary
+"""
 
 else:
 
     prompt = f"""
-    You are a financial transaction analyst.
+You are a financial transaction analyst.
 
-    Prediction Result:
-    {prediction_label}
+Prediction Result:
+{prediction_label}
 
-    Transaction Details:
-    {transaction_text}
+Transaction Details:
+{transaction_text}
 
-    Explain briefly:
+Explain briefly:
 
-    1. Why transaction appears normal
-    2. Risk level
-    3. Why transaction is low risk
-    4. Final summary
-    """
+1. Why transaction appears normal
+2. Risk level
+3. Why transaction is low risk
+4. Final summary
+"""
+
 # -----------------------------------
-# GENERATE AI RESPONSE
+# AI BUTTON
 # -----------------------------------
 
-if st.button("Generate AI Fraud Analysis"):
+if st.button("🚀 Generate AI Fraud Analysis"):
 
     with st.spinner("Generating AI insights..."):
 
@@ -366,7 +386,7 @@ if st.button("Generate AI Fraud Analysis"):
 
         ai_output = response.choices[0].message.content
 
-        st.subheader("AI Fraud Intelligence Report")
+        st.subheader("🤖 AI Fraud Intelligence Report")
 
         st.markdown(f"""
 <div style="
@@ -381,6 +401,9 @@ border:2px solid #00FFAA;
 </div>
 """, unsafe_allow_html=True)
 
+# -----------------------------------
+# BUSINESS IMPACT
+# -----------------------------------
 
 st.markdown("""
 ---
@@ -394,6 +417,6 @@ FinIntel AI helps financial institutions:
 - Generate AI-powered fraud intelligence reports
 - Enhance financial risk monitoring systems
 
-This project demonstrates the integration of:
+This project demonstrates:
 Machine Learning + RAG + Vector Databases + LLM APIs.
 """)
