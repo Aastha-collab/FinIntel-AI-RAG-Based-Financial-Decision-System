@@ -385,16 +385,45 @@ else:
 
 with st.expander("📄 View Transaction Details"):
 
-    styled_df = sample_transaction.style.set_properties(**{
-        'background-color': '#FFFFFF',
-        'color': '#1E293B',
-        'border-color': '#E9D5FF'
-    })
+    st.markdown(f"""
+    <div style="
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0px 4px 12px rgba(0,0,0,0.06);
+    border:1px solid #E9D5FF;
+    ">
 
-    st.dataframe(
-        styled_df,
-        use_container_width=True
-    )
+    <table style="
+    width:100%;
+    border-collapse:collapse;
+    color:#1E293B;
+    font-size:15px;
+    ">
+
+    <tr>
+        <th style="text-align:left;padding:10px;">Feature</th>
+        <th style="text-align:left;padding:10px;">Value</th>
+    </tr>
+
+    {''.join([
+        f'''
+        <tr>
+            <td style="padding:10px;border-top:1px solid #F3E8FF;">
+                {col}
+            </td>
+            <td style="padding:10px;border-top:1px solid #F3E8FF;">
+                {sample_transaction.iloc[0][col]}
+            </td>
+        </tr>
+        '''
+        for col in sample_transaction.columns
+    ])}
+
+    </table>
+
+    </div>
+    """, unsafe_allow_html=True)
 
 # =========================================================
 # TRANSACTION TEXT
