@@ -539,52 +539,13 @@ if st.button("✨ Generate AI Fraud Analysis"):
         ai_output = response.choices[0].message.content
 
         st.markdown(f"""
-<div style="
-background: linear-gradient(
-135deg,
-#FFF1F7 0%,
-#FFE4F1 100%
-);
-padding: 25px;
-border-radius: 22px;
-border-left: 8px solid #EC4899;
-box-shadow: 0px 6px 18px rgba(236,72,153,0.12);
-margin-top: 20px;
-color: #1E293B;
-line-height: 1.7;
-font-size: 15px;
-">
+<div class="report-box">
 
-<h2 style="
-color:#BE185D;
-margin-bottom:18px;
-font-size:28px;
-">
-🤖 AI Fraud Intelligence Report
-</h2>
-
-<div style="
-margin:0;
-color:#1E293B;
-font-size:15px;
-line-height:1.8;
-">
-{
-ai_output
-.replace("Fraud Reason:", "<b>Fraud Reason:</b>")
-.replace("Risk Level:", "<b>Risk Level:</b>")
-.replace("Suggested Action:", "<b>Suggested Action:</b>")
-.replace("Investigation Summary:", "<b>Investigation Summary:</b>")
-.replace("Why transaction appears normal:", "<b>Why transaction appears normal:</b>")
-.replace("Why transaction is low risk:", "<b>Why transaction is low risk:</b>")
-.replace("Final summary:", "<b>Final summary:</b>")
-.replace(chr(10), "<br>")
-}
-</div>
+{ai_output}
 
 </div>
 """, unsafe_allow_html=True)
-
+        
         # DOWNLOAD REPORT
 
         st.download_button(
