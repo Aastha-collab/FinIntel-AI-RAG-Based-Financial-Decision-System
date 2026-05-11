@@ -201,29 +201,6 @@ with col3:
     )
 
 # -----------------------------------
-# DYNAMIC PIE CHART
-# -----------------------------------
-
-st.subheader("📊 Dataset Distribution")
-
-fig, ax = plt.subplots()
-
-labels = ['Normal', 'Fraud']
-
-sizes = [
-    len(normal_df),
-    len(fraud_df)
-]
-
-ax.pie(
-    sizes,
-    labels=labels,
-    autopct='%1.1f%%'
-)
-
-st.pyplot(fig)
-
-# -----------------------------------
 # TRANSACTION
 # -----------------------------------
 
@@ -269,26 +246,6 @@ else:
 with st.expander("📄 Transaction Details"):
 
     st.write(sample_transaction)
-
-# -----------------------------------
-# DYNAMIC TRANSACTION GRAPH
-# -----------------------------------
-
-st.subheader("📈 Transaction Feature Visualization")
-
-features = ['Amount', 'V14', 'V10']
-
-values = [
-    sample_transaction['Amount'].values[0],
-    sample_transaction['V14'].values[0],
-    sample_transaction['V10'].values[0]
-]
-
-fig2, ax2 = plt.subplots()
-
-ax2.bar(features, values)
-
-st.pyplot(fig2)
 
 # -----------------------------------
 # TRANSACTION TEXT
@@ -400,6 +357,57 @@ border:2px solid #00FFAA;
 
 </div>
 """, unsafe_allow_html=True)
+
+# -----------------------------------
+# DYNAMIC TRANSACTION GRAPH
+# -----------------------------------
+
+st.subheader("📈 Transaction Feature Visualization")
+
+features = ['Amount', 'V14', 'V10']
+
+values = [
+    sample_transaction['Amount'].values[0],
+    sample_transaction['V14'].values[0],
+    sample_transaction['V10'].values[0]
+]
+
+# Smaller graph size
+fig2, ax2 = plt.subplots(figsize=(5,3))
+
+# Custom colors
+colors = ['#00FFAA', '#FF4B4B', '#4B8BFF']
+
+ax2.bar(
+    features,
+    values,
+    color=colors,
+    width=0.5
+)
+
+# Titles and labels
+ax2.set_title("Transaction Feature Scores")
+
+ax2.set_ylabel("Feature Values")
+
+# Background colors
+fig2.patch.set_facecolor('#0E1117')
+
+ax2.set_facecolor('#1E1E1E')
+
+# Text color
+ax2.tick_params(colors='white')
+
+ax2.yaxis.label.set_color('white')
+
+ax2.title.set_color('white')
+
+# Remove top/right borders
+ax2.spines['top'].set_visible(False)
+
+ax2.spines['right'].set_visible(False)
+
+st.pyplot(fig2)
 
 # -----------------------------------
 # BUSINESS IMPACT
