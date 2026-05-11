@@ -71,35 +71,45 @@ st.markdown(
         color: white !important;
     }
 
-    div[data-testid="metric-container"] {
-        background: rgba(255,255,255,0.92);
-        border-radius: 22px;
-        padding: 20px;
-        box-shadow: 0px 4px 20px rgba(0,0,0,0.08);
-        border-left: 8px solid #8B5CF6;
-        transition: 0.3s;
-    }
+    /* ============================= */
+/* METRIC CARDS */
+/* ============================= */
 
-    /* METRIC LABELS */
+div[data-testid="metric-container"] {
 
-div[data-testid="metric-container"] label {
+    background: white !important;
+
+    border-radius: 20px !important;
+
+    padding: 20px !important;
+
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.08) !important;
+
+    border-left: 8px solid #8B5CF6 !important;
+}
+
+/* METRIC LABEL */
+
+div[data-testid="metric-container"] p {
 
     color: #6B7280 !important;
 
-    font-weight: 600 !important;
+    font-size: 16px !important;
 
-    font-size: 15px !important;
+    font-weight: 700 !important;
 }
 
-/* METRIC VALUES */
+/* METRIC VALUE */
 
-div[data-testid="metric-container"] [data-testid="stMetricValue"] {
+div[data-testid="metric-container"] h1 {
 
-    color: #4C1D95 !important;
+    color: #5B21B6 !important;
 
-    font-size: 32px !important;
+    font-size: 38px !important;
 
-    font-weight: 800 !important;
+    font-weight: 900 !important;
+
+    margin-top: -10px !important;
 }
 
     div[data-testid="metric-container"]:hover {
