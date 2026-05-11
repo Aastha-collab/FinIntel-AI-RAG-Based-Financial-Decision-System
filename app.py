@@ -88,28 +88,11 @@ div[data-testid="metric-container"] {
     border-left: 8px solid #8B5CF6 !important;
 }
 
-/* METRIC LABEL */
+/* FORCE METRIC TEXT VISIBLE */
 
-div[data-testid="metric-container"] p {
+div[data-testid="metric-container"] * {
 
-    color: #6B7280 !important;
-
-    font-size: 16px !important;
-
-    font-weight: 700 !important;
-}
-
-/* METRIC VALUE */
-
-div[data-testid="metric-container"] h1 {
-
-    color: #5B21B6 !important;
-
-    font-size: 38px !important;
-
-    font-weight: 900 !important;
-
-    margin-top: -10px !important;
+    color: black !important;
 }
 
     div[data-testid="metric-container"]:hover {
