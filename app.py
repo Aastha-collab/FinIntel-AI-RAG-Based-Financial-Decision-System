@@ -461,7 +461,32 @@ if st.button("✨ Generate AI Fraud Analysis"):
         st.markdown("## 🤖 AI Fraud Intelligence Report")
 
         st.markdown(f"""
-<div class="report-box">
+<div style="
+
+background: linear-gradient(
+135deg,
+#FFF1F7 0%,
+#FFE4F1 100%
+);
+
+padding: 28px;
+
+border-radius: 24px;
+
+border-left: 8px solid #EC4899;
+
+box-shadow:
+0px 6px 20px rgba(236,72,153,0.12);
+
+margin-top: 20px;
+
+color: #1E293B;
+
+line-height: 1.8;
+
+font-size: 16px;
+
+">
 
 {ai_output}
 
