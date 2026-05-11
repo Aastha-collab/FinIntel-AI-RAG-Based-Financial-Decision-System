@@ -176,6 +176,35 @@ div[data-testid="metric-container"] * {
     color: #1E293B !important;
 }    
 
+/* SIDEBAR DROPDOWN FIX */
+
+[data-testid="stSidebar"] .stSelectbox > div > div {
+
+    background-color: white !important;
+
+    color: black !important;
+
+    border-radius: 12px !important;
+
+    border: 1px solid #E9D5FF !important;
+}
+
+/* SELECTED VALUE TEXT */
+
+[data-testid="stSidebar"] .stSelectbox * {
+
+    color: black !important;
+}
+
+/* DROPDOWN MENU */
+
+div[role="listbox"] {
+
+    background-color: white !important;
+
+    color: black !important;
+}
+
     </style>
     """,
     unsafe_allow_html=True
