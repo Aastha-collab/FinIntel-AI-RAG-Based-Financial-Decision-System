@@ -80,6 +80,28 @@ st.markdown(
         transition: 0.3s;
     }
 
+    /* METRIC LABELS */
+
+div[data-testid="metric-container"] label {
+
+    color: #6B7280 !important;
+
+    font-weight: 600 !important;
+
+    font-size: 15px !important;
+}
+
+/* METRIC VALUES */
+
+div[data-testid="metric-container"] [data-testid="stMetricValue"] {
+
+    color: #4C1D95 !important;
+
+    font-size: 32px !important;
+
+    font-weight: 800 !important;
+}
+
     div[data-testid="metric-container"]:hover {
         transform: translateY(-3px);
         box-shadow: 0px 8px 25px rgba(0,0,0,0.12);
