@@ -20,281 +20,133 @@ st.set_page_config(
 # PREMIUM UI / CSS
 # =========================================================
 
-st.markdown("""
-<style>
-
-/* ============================= */
-/* MAIN APP */
-/* ============================= */
-
-.stApp {
-    background: linear-gradient(
-        135deg,
-        #F9FAFF 0%,
-        #EEF2FF 50%,
-        #F5F3FF 100%
-    );
-    color: #1E293B;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* ============================= */
-/* REMOVE STREAMLIT DEFAULTS */
-/* ============================= */
-
-#MainMenu {
-    visibility: hidden;
-}
-
-footer {
-    visibility: hidden;
-}
-
-header {
-    visibility: hidden;
-}
-
-/* ============================= */
-/* TITLES */
-/* ============================= */
-
-h1 {
-    color: #5B21B6 !important;
-    font-size: 3rem !important;
-    font-weight: 800 !important;
-}
-
-h2, h3, h4 {
-    color: #6D28D9 !important;
-    font-weight: 700 !important;
-}
-
-/* ============================= */
-/* SIDEBAR */
-/* ============================= */
-
-[data-testid="stSidebar"] {
-    background: linear-gradient(
-        180deg,
-        #6D28D9 0%,
-        #7C3AED 50%,
-        #9333EA 100%
-    );
-    border-right: 1px solid rgba(255,255,255,0.1);
-}
-
-/* SIDEBAR TEXT */
-
-[data-testid="stSidebar"] * {
-    color: white !important;
-}
-
-/* ============================= */
-/* METRIC CARDS */
-/* ============================= */
-
-div[data-testid="metric-container"] {
-
-    background: rgba(255,255,255,0.92);
-
-    border-radius: 22px;
-
-    padding: 20px;
-
-    box-shadow:
-        0px 4px 20px rgba(0,0,0,0.08);
-
-    border-left: 8px solid #8B5CF6;
-
-    transition: 0.3s;
-}
-
-div[data-testid="metric-container"]:hover {
-
-    transform: translateY(-3px);
-
-    box-shadow:
-        0px 8px 25px rgba(0,0,0,0.12);
-}
-
-/* ============================= */
-/* NORMAL BUTTONS */
-/* ============================= */
-
-.stButton>button {
-
-    background: linear-gradient(
-        to right,
-        #EC4899,
-        #F472B6
-    ) !important;
-
-    color: white !important;
-
-    border: none !important;
-
-    border-radius: 14px !important;
-
-    font-size: 17px !important;
-
-    font-weight: 700 !important;
-
-    padding: 12px 18px !important;
-
-    width: 100% !important;
-
-    transition: 0.3s !important;
-
-    box-shadow:
-        0px 4px 15px rgba(236,72,153,0.35);
-}
-
-.stButton>button:hover {
-
-    transform: scale(1.02);
-
-    background: linear-gradient(
-        to right,
-        #DB2777,
-        #EC4899
-    ) !important;
-}
-
-/* ============================= */
-/* DOWNLOAD BUTTON */
-/* ============================= */
-
-[data-testid="stDownloadButton"] button {
-
-    background: white !important;
-
-    color: #EC4899 !important;
-
-    border: 2px solid #F9A8D4 !important;
-
-    border-radius: 12px !important;
-
-    font-weight: 700 !important;
-
-    transition: 0.3s !important;
-}
-
-[data-testid="stDownloadButton"] button:hover {
-
-    background: #FCE7F3 !important;
-
-    color: #BE185D !important;
-
-    border: 2px solid #EC4899 !important;
-}
-
-/* ============================= */
-/* SUCCESS BOX */
-/* ============================= */
-
-.stSuccess {
-
-    background-color: #DCFCE7 !important;
-
-    border-radius: 14px !important;
-
-    padding: 15px !important;
-}
-
-/* ============================= */
-/* ERROR BOX */
-/* ============================= */
-
-.stError {
-
-    background-color: #FEE2E2 !important;
-
-    border-radius: 14px !important;
-
-    padding: 15px !important;
-}
-
-/* ============================= */
-/* EXPANDER HEADER */
-/* ============================= */
-
-.streamlit-expanderHeader {
-
-    background: white !important;
-
-    border-radius: 12px !important;
-
-    font-weight: 600 !important;
-
-    color: #1E293B !important;
-}
-
-/* ============================= */
-/* EXPANDER CONTENT */
-/* ============================= */
-
-.streamlit-expanderContent {
-
-    background-color: white !important;
-
-    border-radius: 12px !important;
-
-    padding: 10px !important;
-
-    color: #1E293B !important;
-}
-
-/* ============================= */
-/* SELECTBOX */
-/* ============================= */
-
-.stSelectbox div[data-baseweb="select"] {
-
-    background-color: white !important;
-
-    border-radius: 10px !important;
-}
-
-/* ============================= */
-/* AI REPORT BOX */
-/* ============================= */
-
-.report-box {
-
-    background: white;
-
-    padding: 28px;
-
-    border-radius: 24px;
-
-    border-left: 10px solid #EC4899;
-
-    box-shadow:
-        0px 8px 25px rgba(0,0,0,0.08);
-
-    margin-top: 20px;
-}
-
-/* ============================= */
-/* SECTION SPACING */
-/* ============================= */
-
-.block-container {
-    padding-top: 2rem;
-}
-
-/* ============================= */
-/* HORIZONTAL LINE */
-/* ============================= */
-
-hr {
-    border: none;
-    height: 1px;
-    background: #D8B4FE;
-}
-
-</style>
-""", unsafe_allow_html=True)
+st.markdown(
+    """
+    <style>
+
+    .stApp {
+        background: linear-gradient(
+            135deg,
+            #F9FAFF 0%,
+            #EEF2FF 50%,
+            #F5F3FF 100%
+        );
+        color: #1E293B;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
+    }
+
+    header {
+        visibility: hidden;
+    }
+
+    h1 {
+        color: #5B21B6 !important;
+        font-size: 3rem !important;
+        font-weight: 800 !important;
+    }
+
+    h2, h3, h4 {
+        color: #6D28D9 !important;
+        font-weight: 700 !important;
+    }
+
+    [data-testid="stSidebar"] {
+        background: linear-gradient(
+            180deg,
+            #6D28D9 0%,
+            #7C3AED 50%,
+            #9333EA 100%
+        );
+    }
+
+    [data-testid="stSidebar"] * {
+        color: white !important;
+    }
+
+    div[data-testid="metric-container"] {
+        background: rgba(255,255,255,0.92);
+        border-radius: 22px;
+        padding: 20px;
+        box-shadow: 0px 4px 20px rgba(0,0,0,0.08);
+        border-left: 8px solid #8B5CF6;
+        transition: 0.3s;
+    }
+
+    div[data-testid="metric-container"]:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 8px 25px rgba(0,0,0,0.12);
+    }
+
+    .stButton>button {
+        background: linear-gradient(
+            to right,
+            #EC4899,
+            #F472B6
+        ) !important;
+
+        color: white !important;
+        border: none !important;
+        border-radius: 14px !important;
+        font-size: 17px !important;
+        font-weight: 700 !important;
+        padding: 12px 18px !important;
+        width: 100% !important;
+        transition: 0.3s !important;
+        box-shadow: 0px 4px 15px rgba(236,72,153,0.35);
+    }
+
+    .stButton>button:hover {
+        transform: scale(1.02);
+
+        background: linear-gradient(
+            to right,
+            #DB2777,
+            #EC4899
+        ) !important;
+    }
+
+    [data-testid="stDownloadButton"] button {
+        background: white !important;
+        color: #EC4899 !important;
+        border: 2px solid #F9A8D4 !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+    }
+
+    [data-testid="stDownloadButton"] button:hover {
+        background: #FCE7F3 !important;
+        color: #BE185D !important;
+    }
+
+    .streamlit-expanderHeader {
+        background: white !important;
+        border-radius: 12px !important;
+        color: #1E293B !important;
+    }
+
+    .streamlit-expanderContent {
+        background-color: white !important;
+        border-radius: 12px !important;
+        padding: 10px !important;
+        color: #1E293B !important;
+    }
+
+    .block-container {
+        padding-top: 2rem;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # =========================================================
 # HEADER
