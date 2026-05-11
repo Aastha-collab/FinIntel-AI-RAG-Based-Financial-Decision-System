@@ -186,23 +186,25 @@ div[data-testid="metric-container"] * {
 
     border-radius: 12px !important;
 
-    border: 1px solid #E9D5FF !important;
+    border: 2px solid #C084FC !important;
+
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.08) !important;
 }
 
-/* SELECTED VALUE TEXT */
+/* DROPDOWN TEXT */
 
 [data-testid="stSidebar"] .stSelectbox * {
 
-    color: white !important;
+    color: black !important;
+
+    font-weight: 600 !important;
 }
 
-/* DROPDOWN MENU */
+/* DROPDOWN ARROW */
 
-div[role="listbox"] {
+[data-testid="stSidebar"] svg {
 
-    background-color: white !important;
-
-    color: black !important;
+    fill: #7C3AED !important;
 }
 
     </style>
