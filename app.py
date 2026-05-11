@@ -59,13 +59,13 @@ header {
 /* ============================= */
 
 h1 {
-    color: #5B21B6;
+    color: #5B21B6 !important;
     font-size: 3rem !important;
     font-weight: 800 !important;
 }
 
 h2, h3, h4 {
-    color: #6D28D9;
+    color: #6D28D9 !important;
     font-weight: 700 !important;
 }
 
@@ -95,7 +95,7 @@ h2, h3, h4 {
 
 div[data-testid="metric-container"] {
 
-    background: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.92);
 
     border-radius: 22px;
 
@@ -118,7 +118,7 @@ div[data-testid="metric-container"]:hover {
 }
 
 /* ============================= */
-/* BUTTONS */
+/* NORMAL BUTTONS */
 /* ============================= */
 
 .stButton>button {
@@ -127,29 +127,42 @@ div[data-testid="metric-container"]:hover {
         to right,
         #EC4899,
         #F472B6
-    );
+    ) !important;
 
-    color: white;
+    color: white !important;
 
-    border: none;
+    border: none !important;
 
-    border-radius: 14px;
+    border-radius: 14px !important;
 
-    font-size: 17px;
+    font-size: 17px !important;
 
-    font-weight: 700;
+    font-weight: 700 !important;
 
-    padding: 12px 18px;
+    padding: 12px 18px !important;
 
-    width: 100%;
+    width: 100% !important;
 
-    transition: 0.3s;
+    transition: 0.3s !important;
 
     box-shadow:
         0px 4px 15px rgba(236,72,153,0.35);
 }
 
+.stButton>button:hover {
+
+    transform: scale(1.02);
+
+    background: linear-gradient(
+        to right,
+        #DB2777,
+        #EC4899
+    ) !important;
+}
+
+/* ============================= */
 /* DOWNLOAD BUTTON */
+/* ============================= */
 
 [data-testid="stDownloadButton"] button {
 
@@ -159,11 +172,11 @@ div[data-testid="metric-container"]:hover {
 
     border: 2px solid #F9A8D4 !important;
 
-    border-radius: 12px;
+    border-radius: 12px !important;
 
-    font-weight: 700;
+    font-weight: 700 !important;
 
-    transition: 0.3s;
+    transition: 0.3s !important;
 }
 
 [data-testid="stDownloadButton"] button:hover {
@@ -181,11 +194,11 @@ div[data-testid="metric-container"]:hover {
 
 .stSuccess {
 
-    background-color: #DCFCE7;
+    background-color: #DCFCE7 !important;
 
-    border-radius: 14px;
+    border-radius: 14px !important;
 
-    padding: 15px;
+    padding: 15px !important;
 }
 
 /* ============================= */
@@ -194,24 +207,39 @@ div[data-testid="metric-container"]:hover {
 
 .stError {
 
-    background-color: #FEE2E2;
+    background-color: #FEE2E2 !important;
 
-    border-radius: 14px;
+    border-radius: 14px !important;
 
-    padding: 15px;
+    padding: 15px !important;
 }
 
 /* ============================= */
-/* EXPANDER */
+/* EXPANDER HEADER */
+/* ============================= */
+
+.streamlit-expanderHeader {
+
+    background: white !important;
+
+    border-radius: 12px !important;
+
+    font-weight: 600 !important;
+
+    color: #1E293B !important;
+}
+
+/* ============================= */
+/* EXPANDER CONTENT */
 /* ============================= */
 
 .streamlit-expanderContent {
 
-    background-color: white;
+    background-color: white !important;
 
-    border-radius: 12px;
+    border-radius: 12px !important;
 
-    padding: 10px;
+    padding: 10px !important;
 
     color: #1E293B !important;
 }
@@ -222,9 +250,9 @@ div[data-testid="metric-container"]:hover {
 
 .stSelectbox div[data-baseweb="select"] {
 
-    background-color: white;
+    background-color: white !important;
 
-    border-radius: 10px;
+    border-radius: 10px !important;
 }
 
 /* ============================= */
