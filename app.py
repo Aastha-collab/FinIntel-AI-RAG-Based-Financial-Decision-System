@@ -563,9 +563,11 @@ font-size:28px;
 🤖 AI Fraud Intelligence Report
 </h2>
 
-<p style="
+<div style="
 margin:0;
 color:#1E293B;
+font-size:15px;
+line-height:1.8;
 ">
 {
 ai_output
@@ -578,7 +580,7 @@ ai_output
 .replace("Final summary:", "<b>Final summary:</b>")
 .replace(chr(10), "<br>")
 }
-</p>
+</div>
 
 </div>
 """, unsafe_allow_html=True)
