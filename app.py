@@ -569,7 +569,6 @@ color:#1E293B;
 ">
 {
 ai_output
-.replace("Fraud Analysis Report", "<b>Fraud Analysis Report</b>")
 .replace("Fraud Reason:", "<b>Fraud Reason:</b>")
 .replace("Risk Level:", "<b>Risk Level:</b>")
 .replace("Suggested Action:", "<b>Suggested Action:</b>")
