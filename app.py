@@ -184,27 +184,28 @@ col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.metric(
+        "Total Transactions",
+        len(df)
+    )
+
+
+with col2:
+    st.metric(
         "Fraud Transactions",
         len(fraud_df)
     )
 
-with col2:
+with col3:
     st.metric(
         "Normal Transactions",
         len(normal_df)
     )
 
-with col3:
+with col4:
     st.metric(
         "Fraud Knowledge Base",
         len(documents)
     )
-
-with col4:
-    st.metric(
-        "Total Transactions",
-        len(fraud_df + normal_df)
-    )    
 
 # -----------------------------------
 # TRANSACTION
@@ -379,10 +380,10 @@ values = [
 ]
 
 # Smaller graph size
-fig2, ax2 = plt.subplots(figsize=(5,3))
+fig2, ax2 = plt.subplots(figsize=(3,3))
 
 # Custom colors
-colors = ['#00FFAA', '#FF4B4B', '#4B8BFF']
+colors = ['#BD002F', '#9EBD00', '#008BBD']
 
 ax2.bar(
     features,
