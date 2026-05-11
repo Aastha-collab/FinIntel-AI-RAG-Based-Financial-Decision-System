@@ -149,15 +149,30 @@ div[data-testid="metric-container"]:hover {
         0px 4px 15px rgba(236,72,153,0.35);
 }
 
-.stButton>button:hover {
+/* DOWNLOAD BUTTON */
 
-    transform: scale(1.02);
+[data-testid="stDownloadButton"] button {
 
-    background: linear-gradient(
-        to right,
-        #DB2777,
-        #EC4899
-    );
+    background: white !important;
+
+    color: #EC4899 !important;
+
+    border: 2px solid #F9A8D4 !important;
+
+    border-radius: 12px;
+
+    font-weight: 700;
+
+    transition: 0.3s;
+}
+
+[data-testid="stDownloadButton"] button:hover {
+
+    background: #FCE7F3 !important;
+
+    color: #BE185D !important;
+
+    border: 2px solid #EC4899 !important;
 }
 
 /* ============================= */
@@ -190,13 +205,15 @@ div[data-testid="metric-container"]:hover {
 /* EXPANDER */
 /* ============================= */
 
-.streamlit-expanderHeader {
+.streamlit-expanderContent {
 
-    background: white;
+    background-color: white;
 
     border-radius: 12px;
 
-    font-weight: 600;
+    padding: 10px;
+
+    color: #1E293B !important;
 }
 
 /* ============================= */
@@ -262,10 +279,10 @@ st.markdown("""
 
 FinIntel AI combines:
 
-- 🤖 Machine Learning Fraud Detection
-- 🔎 Retrieval-Augmented Generation (RAG)
-- 🧠 NVIDIA LLM APIs
-- 📊 AI-Based Financial Reasoning
+- Machine Learning Fraud Detection
+- Retrieval-Augmented Generation (RAG)
+- NVIDIA LLM APIs
+- AI-Based Financial Reasoning
 
 to identify suspicious transactions and generate intelligent fraud investigation reports in real time.
 """)
@@ -372,7 +389,15 @@ row_number = st.sidebar.selectbox(
 # METRICS
 # =========================================================
 
-st.markdown("## 📊 System Analytics")
+st.markdown("""
+<h2 style="
+color:#5B21B6;
+margin-top:20px;
+font-weight:800;
+">
+📊 System Analytics
+</h2>
+""", unsafe_allow_html=True)
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -399,31 +424,6 @@ with col4:
         "Fraud Knowledge Base",
         len(documents)
     )
-
-# =========================================================
-# PIE CHART
-# =========================================================
-
-st.markdown("## 📈 Dataset Distribution")
-
-fig, ax = plt.subplots(figsize=(4,4))
-
-colors = ['#A78BFA', '#F472B6']
-
-ax.pie(
-    [
-        len(normal_df),
-        len(fraud_df)
-    ],
-    labels=['Normal', 'Fraud'],
-    autopct='%1.1f%%',
-    colors=colors,
-    textprops={'fontsize': 10}
-)
-
-fig.patch.set_facecolor('#F8FAFF')
-
-st.pyplot(fig)
 
 # =========================================================
 # TRANSACTION
@@ -471,61 +471,6 @@ else:
 with st.expander("📄 View Transaction Details"):
 
     st.write(sample_transaction)
-
-# =========================================================
-# BAR GRAPH
-# =========================================================
-
-st.markdown("## 📊 Transaction Feature Visualization")
-
-features = ['Amount', 'V14', 'V10']
-
-values = [
-    sample_transaction['Amount'].values[0],
-    sample_transaction['V14'].values[0],
-    sample_transaction['V10'].values[0]
-]
-
-fig2, ax2 = plt.subplots(figsize=(5,3))
-
-colors = ['#F472B6', '#A78BFA', '#60A5FA']
-
-ax2.bar(
-    features,
-    values,
-    color=colors,
-    width=0.45
-)
-
-fig2.patch.set_facecolor('#F8FAFF')
-
-ax2.set_facecolor('#FFFFFF')
-
-ax2.tick_params(
-    axis='x',
-    labelsize=8
-)
-
-ax2.tick_params(
-    axis='y',
-    labelsize=8
-)
-
-ax2.set_title(
-    "Transaction Feature Scores",
-    fontsize=10
-)
-
-ax2.set_ylabel(
-    "Values",
-    fontsize=8
-)
-
-ax2.spines['top'].set_visible(False)
-
-ax2.spines['right'].set_visible(False)
-
-st.pyplot(fig2)
 
 # =========================================================
 # TRANSACTION TEXT
@@ -648,6 +593,92 @@ if st.button("✨ Generate AI Fraud Analysis"):
         )
 
 # =========================================================
+# BAR GRAPH
+# =========================================================
+
+st.markdown("## 📊 Transaction Feature Visualization")
+
+features = ['Amount', 'V14', 'V10']
+
+values = [
+    sample_transaction['Amount'].values[0],
+    sample_transaction['V14'].values[0],
+    sample_transaction['V10'].values[0]
+]
+
+fig2, ax2 = plt.subplots(figsize=(5,3))
+
+colors = ['#F472B6', '#A78BFA', '#60A5FA']
+
+ax2.bar(
+    features,
+    values,
+    color=colors,
+    width=0.45
+)
+
+fig2.patch.set_facecolor('#F8FAFF')
+
+ax2.set_facecolor('#FFFFFF')
+
+ax2.tick_params(
+    axis='x',
+    labelsize=8
+)
+
+ax2.tick_params(
+    axis='y',
+    labelsize=8
+)
+
+ax2.set_title(
+    "Transaction Feature Scores",
+    fontsize=10
+)
+
+ax2.set_ylabel(
+    "Values",
+    fontsize=8
+)
+
+ax2.spines['top'].set_visible(False)
+
+ax2.spines['right'].set_visible(False)
+
+graph_container2 = st.container(border=True)
+
+with graph_container2:
+    st.pyplot(fig2)
+
+# =========================================================
+# PIE CHART
+# =========================================================
+
+st.markdown("## 📈 Dataset Distribution")
+
+fig, ax = plt.subplots(figsize=(4,4))
+
+colors = ['#A78BFA', '#F472B6']
+
+ax.pie(
+    [
+        len(normal_df),
+        len(fraud_df)
+    ],
+    labels=['Normal', 'Fraud'],
+    autopct='%1.1f%%',
+    colors=colors,
+    textprops={'fontsize': 10}
+)
+
+fig.patch.set_facecolor('#F8FAFF')
+
+graph_container = st.container(border=True)
+
+with graph_container:
+    st.pyplot(fig)
+
+# =========================================================
 # BUSINESS IMPACT
 # =========================================================
 
@@ -663,26 +694,3 @@ FinIntel AI helps financial institutions:
 - Improve fraud explainability
 - Generate AI-powered investigation reports
 - Enhance financial risk monitoring systems
-
-This project demonstrates:
-
-✔ Machine Learning  
-✔ Retrieval-Augmented Generation (RAG)  
-✔ Vector Databases  
-✔ NVIDIA LLM APIs  
-✔ AI Decision Intelligence
-""")
-
-# =========================================================
-# FOOTER
-# =========================================================
-
-st.markdown("""
----
-
-<center>
-
-Made with ❤️ using Streamlit, ChromaDB, Sentence Transformers & NVIDIA NIM APIs
-
-</center>
-""", unsafe_allow_html=True)
