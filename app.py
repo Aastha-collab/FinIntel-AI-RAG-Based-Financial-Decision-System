@@ -193,7 +193,7 @@ div[data-testid="metric-container"] * {
 
 [data-testid="stSidebar"] .stSelectbox * {
 
-    color: black !important;
+    color: white !important;
 }
 
 /* DROPDOWN MENU */
