@@ -574,3 +574,5 @@ FinIntel AI helps financial institutions:
 - Improve fraud explainability
 - Generate AI-powered investigation reports
 - Enhance financial risk monitoring systems
+
+""")
