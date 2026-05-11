@@ -77,7 +77,7 @@ st.markdown(
 
 div[data-testid="metric-container"] {
 
-    background: white !important;
+    background: black !important;
 
     border-radius: 20px !important;
 
