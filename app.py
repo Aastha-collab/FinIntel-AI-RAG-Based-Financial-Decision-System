@@ -6,100 +6,295 @@ import chromadb
 from openai import OpenAI
 import matplotlib.pyplot as plt
 
-# -----------------------------------
+# =========================================================
 # PAGE CONFIG
-# -----------------------------------
+# =========================================================
 
 st.set_page_config(
     page_title="FinIntel AI",
+    page_icon="💳",
     layout="wide"
 )
+
+# =========================================================
+# PREMIUM UI / CSS
+# =========================================================
 
 st.markdown("""
 <style>
 
+/* ============================= */
+/* MAIN APP */
+/* ============================= */
+
 .stApp {
-    background-color: #F8F5FF;
-    color: #2E2E2E;
+    background: linear-gradient(
+        135deg,
+        #F9FAFF 0%,
+        #EEF2FF 50%,
+        #F5F3FF 100%
+    );
+    color: #1E293B;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-h1, h2, h3, h4 {
-    color: #C06CFF;
+/* ============================= */
+/* REMOVE STREAMLIT DEFAULTS */
+/* ============================= */
+
+#MainMenu {
+    visibility: hidden;
 }
+
+footer {
+    visibility: hidden;
+}
+
+header {
+    visibility: hidden;
+}
+
+/* ============================= */
+/* TITLES */
+/* ============================= */
+
+h1 {
+    color: #5B21B6;
+    font-size: 3rem !important;
+    font-weight: 800 !important;
+}
+
+h2, h3, h4 {
+    color: #6D28D9;
+    font-weight: 700 !important;
+}
+
+/* ============================= */
+/* SIDEBAR */
+/* ============================= */
 
 [data-testid="stSidebar"] {
-    background-color: #EDE7FF;
+    background: linear-gradient(
+        180deg,
+        #6D28D9 0%,
+        #7C3AED 50%,
+        #9333EA 100%
+    );
+    border-right: 1px solid rgba(255,255,255,0.1);
 }
 
+/* SIDEBAR TEXT */
+
+[data-testid="stSidebar"] * {
+    color: white !important;
+}
+
+/* ============================= */
+/* METRIC CARDS */
+/* ============================= */
+
+div[data-testid="metric-container"] {
+
+    background: rgba(255,255,255,0.85);
+
+    border-radius: 22px;
+
+    padding: 20px;
+
+    box-shadow:
+        0px 4px 20px rgba(0,0,0,0.08);
+
+    border-left: 8px solid #8B5CF6;
+
+    transition: 0.3s;
+}
+
+div[data-testid="metric-container"]:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0px 8px 25px rgba(0,0,0,0.12);
+}
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
+
 .stButton>button {
-    background-color: #FFB6D9;
-    color: #2E2E2E;
-    border-radius: 12px;
-    font-size: 18px;
-    font-weight: bold;
-    height: 3em;
-    width: 100%;
+
+    background: linear-gradient(
+        to right,
+        #EC4899,
+        #F472B6
+    );
+
+    color: white;
+
     border: none;
+
+    border-radius: 14px;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    padding: 12px 18px;
+
+    width: 100%;
+
+    transition: 0.3s;
+
+    box-shadow:
+        0px 4px 15px rgba(236,72,153,0.35);
 }
 
 .stButton>button:hover {
-    background-color: #FF8FC4;
-    color: black;
+
+    transform: scale(1.02);
+
+    background: linear-gradient(
+        to right,
+        #DB2777,
+        #EC4899
+    );
 }
 
-div[data-testid="metric-container"] {
-    background-color: #FFFFFF;
-    border: 2px solid #E5D9FF;
+/* ============================= */
+/* SUCCESS BOX */
+/* ============================= */
+
+.stSuccess {
+
+    background-color: #DCFCE7;
+
+    border-radius: 14px;
+
     padding: 15px;
-    border-radius: 15px;
+}
+
+/* ============================= */
+/* ERROR BOX */
+/* ============================= */
+
+.stError {
+
+    background-color: #FEE2E2;
+
+    border-radius: 14px;
+
+    padding: 15px;
+}
+
+/* ============================= */
+/* EXPANDER */
+/* ============================= */
+
+.streamlit-expanderHeader {
+
+    background: white;
+
+    border-radius: 12px;
+
+    font-weight: 600;
+}
+
+/* ============================= */
+/* SELECTBOX */
+/* ============================= */
+
+.stSelectbox div[data-baseweb="select"] {
+
+    background-color: white;
+
+    border-radius: 10px;
+}
+
+/* ============================= */
+/* AI REPORT BOX */
+/* ============================= */
+
+.report-box {
+
+    background: white;
+
+    padding: 28px;
+
+    border-radius: 24px;
+
+    border-left: 10px solid #EC4899;
+
+    box-shadow:
+        0px 8px 25px rgba(0,0,0,0.08);
+
+    margin-top: 20px;
+}
+
+/* ============================= */
+/* SECTION SPACING */
+/* ============================= */
+
+.block-container {
+    padding-top: 2rem;
+}
+
+/* ============================= */
+/* HORIZONTAL LINE */
+/* ============================= */
+
+hr {
+    border: none;
+    height: 1px;
+    background: #D8B4FE;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-
-# -----------------------------------
+# =========================================================
 # HEADER
-# -----------------------------------
+# =========================================================
 
 st.markdown("""
 # 💳 FinIntel AI
-### AI-Powered Fraud Detection & Financial Decision Intelligence System
 
-This system combines:
-- Machine Learning Fraud Detection
-- Retrieval-Augmented Generation (RAG)
-- NVIDIA LLM APIs
-- AI-Based Financial Reasoning
+### AI-Powered Fraud Detection & Financial Decision Intelligence Dashboard
 
-to identify suspicious financial transactions and generate intelligent fraud investigation reports.
+FinIntel AI combines:
+
+- 🤖 Machine Learning Fraud Detection
+- 🔎 Retrieval-Augmented Generation (RAG)
+- 🧠 NVIDIA LLM APIs
+- 📊 AI-Based Financial Reasoning
+
+to identify suspicious transactions and generate intelligent fraud investigation reports in real time.
 """)
 
-# -----------------------------------
+# =========================================================
 # LOAD DATA
-# -----------------------------------
+# =========================================================
 
 df = pd.read_csv("creditcard_sample.csv")
 
 df['Hour'] = df['Time'] // 3600
 
-# -----------------------------------
+# =========================================================
 # LOAD MODEL
-# -----------------------------------
+# =========================================================
 
 rf_model = joblib.load("rf_model.pkl")
 
-# -----------------------------------
-# LOAD EMBEDDING MODEL
-# -----------------------------------
+# =========================================================
+# EMBEDDING MODEL
+# =========================================================
 
 embedding_model = SentenceTransformer(
     'all-MiniLM-L6-v2'
 )
 
-# -----------------------------------
-# CREATE KNOWLEDGE BASE
-# -----------------------------------
+# =========================================================
+# KNOWLEDGE BASE
+# =========================================================
 
 fraud_df = df[df['Class'] == 1]
 
@@ -122,23 +317,17 @@ This transaction shows abnormal fraud-related behavior.
 
     documents.append(text)
 
-# -----------------------------------
-# EMBEDDINGS
-# -----------------------------------
-
 embeddings = embedding_model.encode(documents)
 
-# -----------------------------------
+# =========================================================
 # CHROMADB
-# -----------------------------------
+# =========================================================
 
 client_db = chromadb.Client()
 
 collection = client_db.get_or_create_collection(
     name="fraud_rag"
 )
-
-# Avoid duplicate insertion
 
 if collection.count() == 0:
 
@@ -148,9 +337,9 @@ if collection.count() == 0:
         ids=[str(i) for i in range(len(documents))]
     )
 
-# -----------------------------------
+# =========================================================
 # NVIDIA CLIENT
-# -----------------------------------
+# =========================================================
 
 NVIDIA_API_KEY = st.secrets["NVIDIA_API_KEY"]
 
@@ -159,29 +348,31 @@ client = OpenAI(
     api_key=NVIDIA_API_KEY
 )
 
-# -----------------------------------
+# =========================================================
 # SIDEBAR
-# -----------------------------------
+# =========================================================
 
-st.sidebar.header("🔍 Transaction Selection")
+st.sidebar.markdown("# 🔍 Transaction Explorer")
 
 st.sidebar.markdown("""
-Select a transaction row to:
-- Predict fraud risk
-- Retrieve similar fraud cases
-- Generate AI investigation report
+Select a transaction to:
+
+✔ Predict fraud risk  
+✔ Retrieve similar fraud cases  
+✔ Generate AI investigation report  
+✔ Analyze suspicious patterns
 """)
 
-# DROPDOWN
-
 row_number = st.sidebar.selectbox(
-    "Select Transaction Row",
+    "Choose Transaction Row",
     options=df.index.tolist()
 )
 
-# -----------------------------------
+# =========================================================
 # METRICS
-# -----------------------------------
+# =========================================================
+
+st.markdown("## 📊 System Analytics")
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -191,16 +382,15 @@ with col1:
         len(df)
     )
 
-
 with col2:
     st.metric(
-        "Fraud Transactions",
+        "Fraud Cases",
         len(fraud_df)
     )
 
 with col3:
     st.metric(
-        "Normal Transactions",
+        "Normal Cases",
         len(normal_df)
     )
 
@@ -210,9 +400,34 @@ with col4:
         len(documents)
     )
 
-# -----------------------------------
+# =========================================================
+# PIE CHART
+# =========================================================
+
+st.markdown("## 📈 Dataset Distribution")
+
+fig, ax = plt.subplots(figsize=(4,4))
+
+colors = ['#A78BFA', '#F472B6']
+
+ax.pie(
+    [
+        len(normal_df),
+        len(fraud_df)
+    ],
+    labels=['Normal', 'Fraud'],
+    autopct='%1.1f%%',
+    colors=colors,
+    textprops={'fontsize': 10}
+)
+
+fig.patch.set_facecolor('#F8FAFF')
+
+st.pyplot(fig)
+
+# =========================================================
 # TRANSACTION
-# -----------------------------------
+# =========================================================
 
 sample_transaction = df.drop(
     'Class',
@@ -223,9 +438,9 @@ prediction = rf_model.predict(
     sample_transaction
 )
 
-# -----------------------------------
-# PREDICTION LABEL
-# -----------------------------------
+# =========================================================
+# LABEL
+# =========================================================
 
 if prediction[0] == 1:
 
@@ -235,11 +450,11 @@ else:
 
     prediction_label = "Normal Transaction"
 
-# -----------------------------------
-# SHOW PREDICTION
-# -----------------------------------
+# =========================================================
+# RESULT
+# =========================================================
 
-st.subheader("🎯 Prediction Result")
+st.markdown("## 🎯 Prediction Result")
 
 if prediction_label == "Fraudulent Transaction":
 
@@ -249,17 +464,72 @@ else:
 
     st.success(f"✅ {prediction_label}")
 
-# -----------------------------------
+# =========================================================
 # TRANSACTION DETAILS
-# -----------------------------------
+# =========================================================
 
-with st.expander("📄 Transaction Details"):
+with st.expander("📄 View Transaction Details"):
 
     st.write(sample_transaction)
 
-# -----------------------------------
+# =========================================================
+# BAR GRAPH
+# =========================================================
+
+st.markdown("## 📊 Transaction Feature Visualization")
+
+features = ['Amount', 'V14', 'V10']
+
+values = [
+    sample_transaction['Amount'].values[0],
+    sample_transaction['V14'].values[0],
+    sample_transaction['V10'].values[0]
+]
+
+fig2, ax2 = plt.subplots(figsize=(5,3))
+
+colors = ['#F472B6', '#A78BFA', '#60A5FA']
+
+ax2.bar(
+    features,
+    values,
+    color=colors,
+    width=0.45
+)
+
+fig2.patch.set_facecolor('#F8FAFF')
+
+ax2.set_facecolor('#FFFFFF')
+
+ax2.tick_params(
+    axis='x',
+    labelsize=8
+)
+
+ax2.tick_params(
+    axis='y',
+    labelsize=8
+)
+
+ax2.set_title(
+    "Transaction Feature Scores",
+    fontsize=10
+)
+
+ax2.set_ylabel(
+    "Values",
+    fontsize=8
+)
+
+ax2.spines['top'].set_visible(False)
+
+ax2.spines['right'].set_visible(False)
+
+st.pyplot(fig2)
+
+# =========================================================
 # TRANSACTION TEXT
-# -----------------------------------
+# =========================================================
 
 transaction_text = f"""
 Transaction Summary
@@ -270,9 +540,9 @@ Suspicious V14 Score: {sample_transaction['V14'].values[0]}
 Suspicious V10 Score: {sample_transaction['V10'].values[0]}
 """
 
-# -----------------------------------
+# =========================================================
 # FRAUD / NORMAL LOGIC
-# -----------------------------------
+# =========================================================
 
 if prediction_label == "Fraudulent Transaction":
 
@@ -328,13 +598,13 @@ Explain briefly:
 4. Final summary
 """
 
-# -----------------------------------
+# =========================================================
 # AI BUTTON
-# -----------------------------------
+# =========================================================
 
-if st.button("🚀 Generate AI Fraud Analysis"):
+if st.button("✨ Generate AI Fraud Analysis"):
 
-    with st.spinner("Generating AI insights..."):
+    with st.spinner("Generating AI financial intelligence..."):
 
         response = client.chat.completions.create(
 
@@ -348,140 +618,71 @@ if st.button("🚀 Generate AI Fraud Analysis"):
             ],
 
             temperature=0.3,
+
             max_tokens=300
         )
 
         ai_output = response.choices[0].message.content
 
-        st.subheader("🤖 AI Fraud Intelligence Report")
+        st.markdown("## 🤖 AI Fraud Intelligence Report")
 
         st.markdown(f"""
-<div style="
-background-color:#1E1E1E;
-padding:20px;
-border-radius:15px;
-border:2px solid #00FFAA;
-">
+<div class="report-box">
 
 {ai_output}
 
 </div>
 """, unsafe_allow_html=True)
 
-# DOWNLOAD BUTTON
+        # DOWNLOAD REPORT
 
-st.download_button(
+        st.download_button(
 
-    label="📥 Download AI Report",
+            label="📥 Download AI Report",
 
-    data=ai_output,
+            data=ai_output,
 
-    file_name="fraud_analysis_report.txt",
+            file_name="fraud_analysis_report.txt",
 
-    mime="text/plain"
-)
+            mime="text/plain"
+        )
 
-# -----------------------------------
-# TRANSACTION FEATURE GRAPH
-# -----------------------------------
-
-st.subheader("📈 Transaction Feature Visualization")
-
-features = ['Amount', 'V14', 'V10']
-
-values = [
-    sample_transaction['Amount'].values[0],
-    sample_transaction['V14'].values[0],
-    sample_transaction['V10'].values[0]
-]
-
-# Smaller graph
-fig2, ax2 = plt.subplots(figsize=(4.5, 3))
-
-# Soft pastel colors
-colors = ['#FFB6D9', '#CDB4FF', '#A0E7E5']
-
-ax2.bar(
-    features,
-    values,
-    color=colors,
-    width=0.45
-)
-
-# Background colors
-fig2.patch.set_facecolor('#F8F5FF')
-
-ax2.set_facecolor('#FFFFFF')
-
-# Small text sizes
-ax2.tick_params(
-    axis='x',
-    labelsize=8
-)
-
-ax2.tick_params(
-    axis='y',
-    labelsize=8
-)
-
-# Labels
-ax2.set_title(
-    "Transaction Feature Scores",
-    fontsize=10
-)
-
-ax2.set_ylabel(
-    "Values",
-    fontsize=8
-)
-
-# Clean look
-ax2.spines['top'].set_visible(False)
-
-ax2.spines['right'].set_visible(False)
-
-st.pyplot(fig2)
-
-# Titles and labels
-ax2.set_title("Transaction Feature Scores")
-
-ax2.set_ylabel("Feature Values")
-
-# Background colors
-fig2.patch.set_facecolor('#0E1117')
-
-ax2.set_facecolor('#1E1E1E')
-
-# Text color
-ax2.tick_params(colors='white')
-
-ax2.yaxis.label.set_color('white')
-
-ax2.title.set_color('white')
-
-# Remove top/right borders
-ax2.spines['top'].set_visible(False)
-
-ax2.spines['right'].set_visible(False)
-
-st.pyplot(fig2)
-
-# -----------------------------------
+# =========================================================
 # BUSINESS IMPACT
-# -----------------------------------
+# =========================================================
 
 st.markdown("""
 ---
-## Business Impact
+
+## 💼 Business Impact
 
 FinIntel AI helps financial institutions:
 
 - Detect suspicious transactions faster
 - Reduce fraud investigation time
-- Improve explainability in fraud detection
-- Generate AI-powered fraud intelligence reports
+- Improve fraud explainability
+- Generate AI-powered investigation reports
 - Enhance financial risk monitoring systems
 
 This project demonstrates:
-Machine Learning + RAG + Vector Databases + LLM APIs.
+
+✔ Machine Learning  
+✔ Retrieval-Augmented Generation (RAG)  
+✔ Vector Databases  
+✔ NVIDIA LLM APIs  
+✔ AI Decision Intelligence
 """)
+
+# =========================================================
+# FOOTER
+# =========================================================
+
+st.markdown("""
+---
+
+<center>
+
+Made with ❤️ using Streamlit, ChromaDB, Sentence Transformers & NVIDIA NIM APIs
+
+</center>
+""", unsafe_allow_html=True)
