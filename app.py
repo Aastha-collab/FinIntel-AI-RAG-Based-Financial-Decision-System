@@ -545,29 +545,30 @@ background: linear-gradient(
 #FFF1F7 0%,
 #FFE4F1 100%
 );
-padding: 30px;
-border-radius: 24px;
+padding: 25px;
+border-radius: 22px;
 border-left: 8px solid #EC4899;
-box-shadow: 0px 6px 20px rgba(236,72,153,0.12);
+box-shadow: 0px 6px 18px rgba(236,72,153,0.12);
 margin-top: 20px;
 color: #1E293B;
-line-height: 1.9;
-font-size: 16px;
+line-height: 1.7;
+font-size: 15px;
 ">
 
 <h2 style="
 color:#BE185D;
-margin-bottom:20px;
+margin-bottom:18px;
+font-size:28px;
 ">
 🤖 AI Fraud Intelligence Report
 </h2>
 
-<div style="
+<p style="
+margin:0;
 color:#1E293B;
-white-space: pre-wrap;
 ">
-{ai_output}
-</div>
+{ai_output.replace(chr(10), "<br>")}
+</p>
 
 </div>
 """, unsafe_allow_html=True)
