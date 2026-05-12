@@ -533,7 +533,9 @@ if st.button("✨ Generate AI Fraud Analysis"):
 
             temperature=0.3,
 
-            max_tokens=300
+            top_p=0.9,
+
+            max_tokens=700
         )
 
         ai_output = response.choices[0].message.content
