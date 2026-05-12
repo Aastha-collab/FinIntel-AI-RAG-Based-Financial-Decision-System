@@ -37,6 +37,19 @@ This project solves that problem by combining machine learning with AI reasoning
 
 ---
 
+## Live Demo
+
+🔗 [Click Here to Use FinIntel AI](https://finintel-ai-rag-based-financial-decision-system-knbjttpmfrsylc.streamlit.app/)
+
+---
+
+## 🖥️ Dashboard Preview
+
+<img width="1920" height="929" alt="Screenshot (199)" src="https://github.com/user-attachments/assets/35a2464d-31de-4ecb-a2db-65b8833d383e" />
+
+
+---
+
 ## Tech Stack
 
 ### AI / RAG
@@ -102,16 +115,3 @@ FinIntel AI helps financial institutions:
 - Support AI-powered fraud intelligence systems
 
 ---
-
-## 🖥️ Dashboard Preview
-
-<img width="1920" height="929" alt="Screenshot (199)" src="https://github.com/user-attachments/assets/35a2464d-31de-4ecb-a2db-65b8833d383e" />
-
-
----
-
-## ▶️ Run Locally
-
-```bash
-pip install -r requirements.txt
-streamlit run app.py
