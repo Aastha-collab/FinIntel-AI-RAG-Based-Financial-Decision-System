@@ -562,6 +562,248 @@ if st.button("✨ Generate AI Fraud Analysis"):
         )
 
 # =========================================================
+# AI FRAUD CHATBOT
+# =========================================================
+
+st.markdown("""
+<div style="
+background: linear-gradient(
+135deg,
+#111827 0%,
+#1E1B4B 100%
+);
+padding: 28px;
+border-radius: 24px;
+border-left: 6px solid #EC4899;
+box-shadow: 0px 8px 25px rgba(0,0,0,0.35);
+margin-top: 30px;
+">
+
+<h2 style="
+color:#F9A8D4;
+font-weight:800;
+">
+🤖 AI Fraud Chatbot
+</h2>
+
+<p style="
+color:#CBD5E1;
+font-size:16px;
+line-height:1.8;
+">
+
+Ask anything related to:
+
+• Fraud prediction  
+• Risk level  
+• Transaction behavior  
+• Fraud patterns  
+• Similar fraud cases  
+• Financial investigation  
+• Model reasoning  
+• Banking fraud prevention  
+
+</p>
+
+</div>
+""", unsafe_allow_html=True)
+
+# =========================================================
+# CHAT INPUT
+# =========================================================
+
+chat_query = st.text_input(
+    "Ask anything about this transaction or fraud analysis"
+)
+
+# =========================================================
+# CHATBOT RESPONSE
+# =========================================================
+
+if chat_query:
+
+    with st.spinner("AI is analyzing transaction behavior..."):
+
+        chatbot_prompt = f"""
+You are an expert AI financial fraud investigation assistant.
+
+Prediction Result:
+{prediction_label}
+
+Transaction Details:
+{transaction_text}
+
+Retrieved Fraud Cases:
+{retrieved_cases if prediction_label == "Fraudulent Transaction" else "No fraud cases retrieved"}
+
+AI Fraud Analysis:
+{ai_output if 'ai_output' in locals() else "No AI report generated yet"}
+
+User Question:
+{chat_query}
+
+Answer professionally in simple understandable language.
+"""
+
+        chatbot_response = client.chat.completions.create(
+
+            model="meta/llama-3.1-70b-instruct",
+
+            messages=[
+                {
+                    "role": "user",
+                    "content": chatbot_prompt
+                }
+            ],
+
+            temperature=0.3,
+
+            max_tokens=250
+        )
+
+        final_chatbot_response = chatbot_response.choices[0].message.content
+
+
+# =========================================================
+# AI FRAUD CHATBOT
+# =========================================================
+
+st.markdown("""
+<div style="
+background: linear-gradient(
+135deg,
+#111827 0%,
+#1E1B4B 100%
+);
+padding: 28px;
+border-radius: 24px;
+border-left: 6px solid #EC4899;
+box-shadow: 0px 8px 25px rgba(0,0,0,0.35);
+margin-top: 30px;
+">
+
+<h2 style="
+color:#F9A8D4;
+font-weight:800;
+">
+🤖 AI Fraud Chatbot
+</h2>
+
+<p style="
+color:#CBD5E1;
+font-size:16px;
+line-height:1.8;
+">
+
+Ask anything related to:
+
+• Fraud prediction  
+• Risk level  
+• Transaction behavior  
+• Fraud patterns  
+• Similar fraud cases  
+• Financial investigation  
+• Model reasoning  
+• Banking fraud prevention  
+
+</p>
+
+</div>
+""", unsafe_allow_html=True)
+
+# =========================================================
+# CHAT INPUT
+# =========================================================
+
+chat_query = st.text_input(
+    "Ask anything about this transaction or fraud analysis"
+)
+
+# =========================================================
+# CHATBOT RESPONSE
+# =========================================================
+
+if chat_query:
+
+    with st.spinner("AI is analyzing transaction behavior..."):
+
+        chatbot_prompt = f"""
+You are an expert AI financial fraud investigation assistant.
+
+Prediction Result:
+{prediction_label}
+
+Transaction Details:
+{transaction_text}
+
+Retrieved Fraud Cases:
+{retrieved_cases if prediction_label == "Fraudulent Transaction" else "No fraud cases retrieved"}
+
+AI Fraud Analysis:
+{ai_output if 'ai_output' in locals() else "No AI report generated yet"}
+
+User Question:
+{chat_query}
+
+Answer professionally in simple understandable language.
+"""
+
+        chatbot_response = client.chat.completions.create(
+
+            model="meta/llama-3.1-70b-instruct",
+
+            messages=[
+                {
+                    "role": "user",
+                    "content": chatbot_prompt
+                }
+            ],
+
+            temperature=0.3,
+
+            max_tokens=250
+        )
+
+        final_chatbot_response = chatbot_response.choices[0].message.content
+
+        # =====================================================
+        # DISPLAY RESPONSE
+        # =====================================================
+
+        st.markdown(f"""
+        <div style="
+        background: linear-gradient(
+        135deg,
+        #1E293B 0%,
+        #111827 100%
+        );
+        padding: 28px;
+        border-radius: 22px;
+        border-left: 6px solid #A855F7;
+        box-shadow: 0px 8px 25px rgba(0,0,0,0.35);
+        margin-top: 20px;
+        ">
+
+        <h3 style="
+        color:#F472B6;
+        font-weight:700;
+        ">
+        💬 AI Assistant Response
+        </h3>
+
+        <p style="
+        color:white;
+        line-height:1.9;
+        font-size:16px;
+        ">
+        {final_chatbot_response}
+        </p>
+
+        </div>
+        """, unsafe_allow_html=True)
+
+
+# =========================================================
 # BAR GRAPH
 # =========================================================
 
