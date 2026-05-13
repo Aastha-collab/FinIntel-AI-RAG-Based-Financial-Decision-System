@@ -569,39 +569,43 @@ st.markdown("""
 <div style="
 background: linear-gradient(
 135deg,
-#111827 0%,
-#1E1B4B 100%
+#FFF1F7 0%,
+#FFE4F1 100%
 );
-padding: 28px;
-border-radius: 24px;
-border-left: 6px solid #EC4899;
-box-shadow: 0px 8px 25px rgba(0,0,0,0.35);
-margin-top: 30px;
+padding:28px;
+border-radius:24px;
+border-left:6px solid #EC4899;
+box-shadow:0px 6px 20px rgba(236,72,153,0.12);
+margin-top:30px;
 ">
 
 <h2 style="
-color:#F9A8D4;
+color:#BE185D;
 font-weight:800;
+margin-bottom:12px;
 ">
 🤖 AI Fraud Chatbot
 </h2>
 
 <p style="
-color:#CBD5E1;
+color:#4B5563;
 font-size:16px;
 line-height:1.8;
 ">
 
-Ask anything related to:
+You can ask questions related to:
 
 • Fraud prediction  
-• Risk level  
 • Transaction behavior  
+• Risk level  
 • Fraud patterns  
 • Similar fraud cases  
+• AI reasoning  
 • Financial investigation  
-• Model reasoning  
+• Model explanation  
 • Banking fraud prevention  
+• Dataset insights  
+• Feature importance  
 
 </p>
 
@@ -613,19 +617,46 @@ Ask anything related to:
 # =========================================================
 
 chat_query = st.text_input(
-    "Ask anything about this transaction or fraud analysis"
+    "Ask anything related to this fraud detection project"
 )
 
 # =========================================================
-# CHATBOT RESPONSE
+# AI CHATBOT RESPONSE
 # =========================================================
 
 if chat_query:
 
-    with st.spinner("AI is analyzing transaction behavior..."):
+    with st.spinner("AI is analyzing your question..."):
+
+        # SAFE RETRIEVED CASES
+
+        if prediction_label == "Fraudulent Transaction":
+
+            chatbot_cases = retrieved_cases
+
+        else:
+
+            chatbot_cases = "No similar fraud cases retrieved."
+
+        # SAFE AI REPORT
+
+        if 'ai_output' in locals():
+
+            chatbot_report = ai_output
+
+        else:
+
+            chatbot_report = "No AI fraud report generated yet."
+
+        # =====================================================
+        # CHATBOT PROMPT
+        # =====================================================
 
         chatbot_prompt = f"""
-You are an expert AI financial fraud investigation assistant.
+You are an expert AI Financial Fraud Investigation Assistant.
+
+Project:
+FinIntel AI - RAG Based Financial Fraud Detection System
 
 Prediction Result:
 {prediction_label}
@@ -634,16 +665,28 @@ Transaction Details:
 {transaction_text}
 
 Retrieved Fraud Cases:
-{retrieved_cases if prediction_label == "Fraudulent Transaction" else "No fraud cases retrieved"}
+{chatbot_cases}
 
-AI Fraud Analysis:
-{ai_output if 'ai_output' in locals() else "No AI report generated yet"}
+AI Generated Fraud Report:
+{chatbot_report}
 
 User Question:
 {chat_query}
 
-Answer professionally in simple understandable language.
+Instructions:
+- Answer professionally
+- Keep explanations simple and understandable
+- Answer ANYTHING related to this project
+- Explain fraud reasoning clearly
+- Explain risk patterns when asked
+- Explain transaction behavior when asked
+- Explain model logic when asked
+- Explain dataset and business impact when asked
 """
+
+        # =====================================================
+        # NVIDIA RESPONSE
+        # =====================================================
 
         chatbot_response = client.chat.completions.create(
 
@@ -661,146 +704,42 @@ Answer professionally in simple understandable language.
             max_tokens=250
         )
 
-        final_chatbot_response = chatbot_response.choices[0].message.content
-
-
-# =========================================================
-# AI FRAUD CHATBOT
-# =========================================================
-
-st.markdown("""
-<div style="
-background: linear-gradient(
-135deg,
-#111827 0%,
-#1E1B4B 100%
-);
-padding: 28px;
-border-radius: 24px;
-border-left: 6px solid #EC4899;
-box-shadow: 0px 8px 25px rgba(0,0,0,0.35);
-margin-top: 30px;
-">
-
-<h2 style="
-color:#F9A8D4;
-font-weight:800;
-">
-🤖 AI Fraud Chatbot
-</h2>
-
-<p style="
-color:#CBD5E1;
-font-size:16px;
-line-height:1.8;
-">
-
-Ask anything related to:
-
-• Fraud prediction  
-• Risk level  
-• Transaction behavior  
-• Fraud patterns  
-• Similar fraud cases  
-• Financial investigation  
-• Model reasoning  
-• Banking fraud prevention  
-
-</p>
-
-</div>
-""", unsafe_allow_html=True)
-
-# =========================================================
-# CHAT INPUT
-# =========================================================
-
-chat_query = st.text_input(
-    "Ask anything about this transaction or fraud analysis"
-)
-
-# =========================================================
-# CHATBOT RESPONSE
-# =========================================================
-
-if chat_query:
-
-    with st.spinner("AI is analyzing transaction behavior..."):
-
-        chatbot_prompt = f"""
-You are an expert AI financial fraud investigation assistant.
-
-Prediction Result:
-{prediction_label}
-
-Transaction Details:
-{transaction_text}
-
-Retrieved Fraud Cases:
-{retrieved_cases if prediction_label == "Fraudulent Transaction" else "No fraud cases retrieved"}
-
-AI Fraud Analysis:
-{ai_output if 'ai_output' in locals() else "No AI report generated yet"}
-
-User Question:
-{chat_query}
-
-Answer professionally in simple understandable language.
-"""
-
-        chatbot_response = client.chat.completions.create(
-
-            model="meta/llama-3.1-70b-instruct",
-
-            messages=[
-                {
-                    "role": "user",
-                    "content": chatbot_prompt
-                }
-            ],
-
-            temperature=0.3,
-
-            max_tokens=250
-        )
-
-        final_chatbot_response = chatbot_response.choices[0].message.content
+        final_chatbot_answer = chatbot_response.choices[0].message.content
 
         # =====================================================
         # DISPLAY RESPONSE
         # =====================================================
 
         st.markdown(f"""
-        <div style="
-        background: linear-gradient(
-        135deg,
-        #1E293B 0%,
-        #111827 100%
-        );
-        padding: 28px;
-        border-radius: 22px;
-        border-left: 6px solid #A855F7;
-        box-shadow: 0px 8px 25px rgba(0,0,0,0.35);
-        margin-top: 20px;
-        ">
+<div style="
+background:white;
+padding:28px;
+border-radius:24px;
+border-left:6px solid #F472B6;
+box-shadow:0px 6px 20px rgba(236,72,153,0.10);
+margin-top:20px;
+">
 
-        <h3 style="
-        color:#F472B6;
-        font-weight:700;
-        ">
-        💬 AI Assistant Response
-        </h3>
+<h3 style="
+color:#BE185D;
+font-weight:700;
+margin-bottom:15px;
+">
+💬 AI Assistant Response
+</h3>
 
-        <p style="
-        color:white;
-        line-height:1.9;
-        font-size:16px;
-        ">
-        {final_chatbot_response}
-        </p>
+<div style="
+color:#374151;
+font-size:16px;
+line-height:1.9;
+white-space:pre-wrap;
+">
+{final_chatbot_answer}
+</div>
 
-        </div>
-        """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
+
 
 
 # =========================================================
