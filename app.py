@@ -561,28 +561,29 @@ if st.button("✨ Generate AI Fraud Analysis"):
             mime="text/plain"
         )
 
+
 # =========================================================
-# AI FRAUD CHATBOT
+# PREMIUM AI FRAUD CHATBOT
 # =========================================================
 
 st.markdown("""
 <div style="
-background: linear-gradient(
+background:linear-gradient(
 135deg,
 #FFF1F7 0%,
 #FFE4F1 100%
 );
-padding:28px;
-border-radius:24px;
-border-left:6px solid #EC4899;
-box-shadow:0px 6px 20px rgba(236,72,153,0.12);
-margin-top:30px;
+padding:30px;
+border-radius:28px;
+border-left:7px solid #EC4899;
+box-shadow:0px 8px 25px rgba(236,72,153,0.12);
+margin-top:35px;
 ">
 
 <h2 style="
 color:#BE185D;
 font-weight:800;
-margin-bottom:12px;
+margin-bottom:10px;
 ">
 🤖 AI Fraud Chatbot
 </h2>
@@ -590,22 +591,22 @@ margin-bottom:12px;
 <p style="
 color:#4B5563;
 font-size:16px;
-line-height:1.8;
+line-height:1.9;
+margin-bottom:0px;
 ">
 
-You can ask questions related to:
+Ask questions related to:
 
-• Fraud prediction  
-• Transaction behavior  
-• Risk level  
-• Fraud patterns  
-• Similar fraud cases  
-• AI reasoning  
-• Financial investigation  
-• Model explanation  
-• Banking fraud prevention  
-• Dataset insights  
-• Feature importance  
+• Fraud Prediction  
+• Risk Level  
+• Transaction Behavior  
+• Fraud Patterns  
+• AI Investigation  
+• Similar Fraud Cases  
+• Model Logic  
+• Financial Security  
+• Banking Fraud Prevention  
+• Dataset Insights  
 
 </p>
 
@@ -613,22 +614,49 @@ You can ask questions related to:
 """, unsafe_allow_html=True)
 
 # =========================================================
-# CHAT INPUT
+# CHAT INPUT STYLE
+# =========================================================
+
+st.markdown("""
+<style>
+
+.stTextInput > div > div > input {
+
+    background-color: #FFFFFF !important;
+
+    color: #374151 !important;
+
+    border: 2px solid #F9A8D4 !important;
+
+    border-radius: 16px !important;
+
+    padding: 14px !important;
+
+    font-size: 16px !important;
+
+    box-shadow: 0px 4px 15px rgba(236,72,153,0.08) !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# =========================================================
+# USER INPUT
 # =========================================================
 
 chat_query = st.text_input(
-    "Ask anything related to this fraud detection project"
+    "💬 Ask your question here..."
 )
 
 # =========================================================
-# AI CHATBOT RESPONSE
+# CHATBOT RESPONSE
 # =========================================================
 
 if chat_query:
 
-    with st.spinner("AI is analyzing your question..."):
+    with st.spinner("Generating AI response..."):
 
-        # SAFE RETRIEVED CASES
+        # SAFE FRAUD CASES
 
         if prediction_label == "Fraudulent Transaction":
 
@@ -649,13 +677,13 @@ if chat_query:
             chatbot_report = "No AI fraud report generated yet."
 
         # =====================================================
-        # CHATBOT PROMPT
+        # PROMPT
         # =====================================================
 
         chatbot_prompt = f"""
 You are an expert AI Financial Fraud Investigation Assistant.
 
-Project:
+PROJECT:
 FinIntel AI - RAG Based Financial Fraud Detection System
 
 Prediction Result:
@@ -674,21 +702,19 @@ User Question:
 {chat_query}
 
 Instructions:
-- Answer professionally
-- Keep explanations simple and understandable
-- Answer ANYTHING related to this project
-- Explain fraud reasoning clearly
-- Explain risk patterns when asked
-- Explain transaction behavior when asked
-- Explain model logic when asked
-- Explain dataset and business impact when asked
+- Answer accurately
+- Keep explanations simple
+- Answer only project-related questions
+- Explain fraud logic clearly
+- Explain risk behavior clearly
+- Keep formatting clean and professional
 """
 
         # =====================================================
         # NVIDIA RESPONSE
         # =====================================================
 
-        chatbot_response = client.chat.completions.create(
+        response = client.chat.completions.create(
 
             model="meta/llama-3.1-70b-instruct",
 
@@ -699,12 +725,12 @@ Instructions:
                 }
             ],
 
-            temperature=0.3,
+            temperature=0.2,
 
-            max_tokens=250
+            max_tokens=220
         )
 
-        final_chatbot_answer = chatbot_response.choices[0].message.content
+        final_answer = response.choices[0].message.content
 
         # =====================================================
         # DISPLAY RESPONSE
@@ -712,20 +738,20 @@ Instructions:
 
         st.markdown(f"""
 <div style="
-background:white;
+background:#FFFFFF;
 padding:28px;
 border-radius:24px;
-border-left:6px solid #F472B6;
-box-shadow:0px 6px 20px rgba(236,72,153,0.10);
+border-left:6px solid #EC4899;
+box-shadow:0px 6px 18px rgba(236,72,153,0.10);
 margin-top:20px;
 ">
 
 <h3 style="
 color:#BE185D;
-font-weight:700;
-margin-bottom:15px;
+font-weight:800;
+margin-bottom:18px;
 ">
-💬 AI Assistant Response
+💡 AI Assistant Response
 </h3>
 
 <div style="
@@ -734,13 +760,13 @@ font-size:16px;
 line-height:1.9;
 white-space:pre-wrap;
 ">
-{final_chatbot_answer}
+
+{final_answer}
+
 </div>
 
 </div>
 """, unsafe_allow_html=True)
-
-
 
 # =========================================================
 # BAR GRAPH
